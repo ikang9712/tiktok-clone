@@ -37,6 +37,9 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                   TextFormField(
                     decoration: const InputDecoration(hintText: "Email"),
                     validator: (value) {
+                      if (value != null && value.isEmpty) {
+                        return "Please write your email";
+                      }
                       return null;
                     },
                     onSaved: (newValue) {
@@ -49,6 +52,9 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                   TextFormField(
                     decoration: const InputDecoration(hintText: "Password"),
                     validator: (value) {
+                      if (value != null && value.isEmpty) {
+                        return "Please write your password";
+                      }
                       return null;
                     },
                     onSaved: (newValue) {
