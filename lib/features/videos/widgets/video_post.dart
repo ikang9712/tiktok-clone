@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/videos/widgets/video_side_button.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -25,6 +27,31 @@ class _VideoPostState extends State<VideoPost>
   bool _isPaused = false;
   final Duration _animationDuration = const Duration(milliseconds: 200);
   late final AnimationController _animationController;
+  final List<String> captions = [
+    "#googleearth",
+    "#googlemaps",
+    "#inho",
+    "#seemore",
+    "#seemorrrree"
+  ];
+  bool seemore = false;
+  String _createCaption(List<String> caps, bool see) {
+    String result = "";
+    for (var cap in caps) {
+      result += "$cap ";
+      if (!see && result.length > 15) {
+        return result;
+      }
+    }
+    return result;
+  }
+
+  void _onClickCaption() {
+    setState(() {
+      seemore = !seemore;
+    });
+  }
+
   void _onVideoChange() {
     if (_videoPlayerController.value.isInitialized) {
       if (_videoPlayerController.value.duration ==
@@ -36,6 +63,7 @@ class _VideoPostState extends State<VideoPost>
 
   void _initVideoPlayer() async {
     await _videoPlayerController.initialize();
+    await _videoPlayerController.setLooping(true);
     // _videoPlayerController.play();
     setState(() {});
     _videoPlayerController.addListener(_onVideoChange);
@@ -99,28 +127,109 @@ class _VideoPostState extends State<VideoPost>
             ),
           ),
           Positioned.fill(
-              child: IgnorePointer(
-            child: Center(
-              child: AnimatedBuilder(
-                animation: _animationController,
-                builder: (context, child) {
-                  return Transform.scale(
-                    scale: _animationController.value,
-                    child: child,
-                  );
-                },
-                child: AnimatedOpacity(
-                  opacity: _isPaused ? 1 : 0,
-                  duration: _animationDuration,
-                  child: const FaIcon(
-                    FontAwesomeIcons.play,
-                    color: Colors.white,
-                    size: Sizes.size52,
+            child: IgnorePointer(
+              child: Center(
+                child: AnimatedBuilder(
+                  animation: _animationController,
+                  builder: (context, child) {
+                    return Transform.scale(
+                      scale: _animationController.value,
+                      child: child,
+                    );
+                  },
+                  child: AnimatedOpacity(
+                    opacity: _isPaused ? 1 : 0,
+                    duration: _animationDuration,
+                    child: const FaIcon(
+                      FontAwesomeIcons.play,
+                      color: Colors.white,
+                      size: Sizes.size52,
+                    ),
                   ),
                 ),
               ),
             ),
-          ))
+          ),
+          Positioned(
+            bottom: 20,
+            left: 10,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "@innnnhok",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: Sizes.size16,
+                  ),
+                ),
+                Gaps.v10,
+                const Text(
+                  "This is jeresy club!!!",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: Sizes.size14,
+                  ),
+                ),
+                Gaps.v2,
+                Row(
+                  children: [
+                    Text(
+                      _createCaption(captions, seemore),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: Sizes.size14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: _onClickCaption,
+                      child: Text(
+                        seemore ? "" : "See more",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: Sizes.size14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 20,
+            right: 10,
+            child: Column(
+              children: const [
+                CircleAvatar(
+                  radius: 25,
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                  foregroundImage: NetworkImage(
+                      "https://avatars.githubusercontent.com/u/85728616?v=4"),
+                  child: Text("inho"),
+                ),
+                Gaps.v24,
+                VideoSideButton(
+                  icon: FontAwesomeIcons.solidHeart,
+                  text: "2.9M",
+                ),
+                Gaps.v24,
+                VideoSideButton(
+                  icon: FontAwesomeIcons.solidComment,
+                  text: "33K",
+                ),
+                Gaps.v24,
+                VideoSideButton(
+                  icon: FontAwesomeIcons.share,
+                  text: "Share",
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );
