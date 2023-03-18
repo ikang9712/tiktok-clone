@@ -16,16 +16,18 @@ class TikTokApp extends StatelessWidget {
         theme: ThemeData(
             scaffoldBackgroundColor: Colors.white,
             primaryColor: const Color(0xFFE9435A),
+            textSelectionTheme:
+                const TextSelectionThemeData(cursorColor: Color(0xFFE9435A)),
             appBarTheme: const AppBarTheme(
               foregroundColor: Colors.black,
               backgroundColor: Colors.white,
               elevation: 0,
               titleTextStyle: TextStyle(
-                color: Colors.black,
+                color: Color.fromRGBO(25, 20, 20, 1),
                 fontSize: Sizes.size16 + Sizes.size2,
                 fontWeight: FontWeight.w600,
               ),
             )),
-        home: MainNavigationScreen());
+        home: const MainNavigationScreen());
   }
 }
